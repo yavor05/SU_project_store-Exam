@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from SU_project_store.main.validators import validate_starts_with_uppercase
+from exam_store.main.validators import validate_starts_with_uppercase
 from django.core.validators import MinLengthValidator
 
 User = get_user_model()
