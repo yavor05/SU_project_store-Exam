@@ -30,3 +30,14 @@ class DetailProductView(DetailView):
     model = ProductModel
     context_object_name = 'product'
 
+
+class ClothesCatalogue(TemplateView):
+    template_name = "products/clothes_catalogue.html"
+
+
+class ShoesCatalogue(TemplateView):
+    template_name = "products/shoes_catalogue.html"
+
+
+class AccessoriesCatalogue(TemplateView):
+    template_name = "products/accessories_catalogue.html"

@@ -45,8 +45,8 @@ class ProductModel(models.Model):
         ]
     )
     price = models.IntegerField()
-    image = models.ImageField()
-    category = models.ForeignKey(to=CategoryModel)
+    image = models.ImageField(upload_to='static/img/')
+    category = models.ForeignKey(to=CategoryModel, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
 
 

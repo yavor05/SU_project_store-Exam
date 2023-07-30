@@ -1,17 +1,15 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-
-UserModel = get_user_model()
-
-
-class User(UserModel):
-    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
-    date_of_birth = models.DateField(null=True, blank=True)
+from django.contrib.auth.models import User
+from exam_store.main.validators import validate_starts_with_uppercase
+from django.core.validators import MinLengthValidator
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    shipping_address = models.CharField(max_length=200, blank=True)
-    order_history = models.ManyToManyField('Order', blank=True)
-    payment_information = models.CharField(max_length=100, blank=True)
-
+    name = models.CharField(blank=False, null=False, max_length=40, validators=[
+        MinLengthValidator(3), validate_starts_with_uppercase
+    ])
+    description = models.TextField(blank=True, max_length=300)
+    avatar = models.ImageField(upload_to='avatars/', blank=True)
+    age = models.IntegerField()
+    # Add more fields as needed
