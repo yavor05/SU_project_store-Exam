@@ -1,5 +1,6 @@
-{% include 'main/base/navbar.html' %}
+{% extends 'main/base/base.html' %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,6 +63,5 @@
 </body>
 </html>
 
+{% endblock %}
 
-
-{% include 'main/base/footer.html' %}

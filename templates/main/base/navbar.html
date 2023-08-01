@@ -6,9 +6,10 @@
 <nav class="navbar navbar-light">
     <div class="container-fluid">
         {% if profile %}
-            <a class="navbar-brand" href="{% url 'profile_details' %}">Profile</a>
+            <a class="navbar-brand" href="{% url 'profile_details' pk %}">Profile</a>
+            <a class="navbar-brand" href="{% url 'logout_page' %}">Logout</a>
         {% else %}
-            <a class="navbar-brand" href="{% url 'create_profile' %}">Create profile</a>
+            <a class="navbar-brand" href="{% url 'register_page' %}">Create profile</a>
         {% endif %}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

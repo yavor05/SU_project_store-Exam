@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.shortcuts import render
 from django.http import JsonResponse
 
-
+from exam_store.auth_app.models import UserProfile
 from exam_store.main.models import ProductModel
 
 
@@ -18,17 +18,47 @@ class CatalogueView(TemplateView, LoginRequiredMixin):
         "products": products,
     }
 
+    def get(self, request, *args, **kwargs):
+        products = ProductModel.objects.all()
+        current_user = self.request.user
+        context = {
+            "products": products,
+            "profile": current_user
+        }
+        return render(request, template_name='auth_app/profile_details.html', context=context)
+
 
 class AboutPageView(TemplateView):
     template_name = "main/about_page.html"
 
+    def get(self, request, *args, **kwargs):
+        current_user = self.request.user
+        context = {
+            "profile": current_user
+        }
+        return render(request, template_name='auth_app/profile_details.html', context=context)
 
-class HomePageView(TemplateView):
+
+class HomePageView(View):
     template_name = 'main/home_page.html'
+
+    def get(self, request, *args, **kwargs):
+        current_user = self.request.user
+        context = {
+            "profile": current_user
+        }
+        return render(request, template_name='auth_app/profile_details.html', context=context)
 
 
 class ShoppingCartView(TemplateView):
     template_name = 'main/shopping_cart.html'
+
+    def get(self, request, *args, **kwargs):
+        current_user = self.request.user
+        context = {
+            "profile": current_user
+        }
+        return render(request, template_name='auth_app/profile_details.html', context=context)
 
 
 def search_view(request):

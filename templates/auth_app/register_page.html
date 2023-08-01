@@ -1,15 +1,33 @@
 <!-- templates/registration/register.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register</title>
-</head>
-<body>
+{% extends 'main/base/base.html' %}
+{% load custom_filters %}
+{% block content %}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Register</title>
+    </head>
+    <body>
     <h1>Register</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.username.errors }}
+        {{ form.username|placeholder:'Username'}}
+        {{ form.email.errors }}
+        {{ form.email|placeholder:'Email' }}
+        {{ form.first_name.errors }}
+        {{ form.first_name|placeholder:'First name'}}
+        {{ form.last_name.errors }}
+        {{ form.last_name|placeholder:'Last name' }}
+        {{ form.password1.errors }}
+        {{ form.password2.errors }}
+        {{ form.password1|placeholder:'Password' }}
+        {{ form.password2|placeholder:'Repeat password' }}
         <button type="submit">Register</button>
+        <p>Already have an account?</p>
+        <a href="{% url 'login_page' %}" class="login-button">Login</a>
     </form>
-</body>
-</html>
+    </body>
+    </html>
+{% endblock %}
+

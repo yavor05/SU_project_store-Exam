@@ -1,20 +1,25 @@
-from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 
+from exam_store.auth_app.forms import UserProfileForm, LoginForm
 from exam_store.auth_app.models import UserProfile
 
 
 class LoginPageView(LoginView):
     template_name = "auth_app/login_page.html"
+    form_class = LoginForm
+    next_page = reverse_lazy('home_page')
 
-
-class RegisterPageView(CreateView):
-    form_class = UserCreationForm
-    template_name = 'auth_app/register_page.html'
-    success_url = reverse_lazy('home_page')
+    def get(self, request, *args, **kwargs):
+        current_user = self.request.user
+        context = {
+            "profile": current_user
+        }
+        return render(request, template_name='auth_app/profile_details.html', context=context)
 
 
 class ProfileDetailsView(DetailView):
@@ -22,13 +27,34 @@ class ProfileDetailsView(DetailView):
     template_name = 'auth_app/profile_details.html'
     context_object_name = 'user_profile'
 
+    def get(self, request, *args, **kwargs):
+        current_user = self.request.user
+        context = {
+            "profile": current_user
+        }
+        return render(request, template_name='auth_app/profile_details.html', context=context)
 
-class CreateUserProfileView(CreateView):
+
+class UserRegisterView(CreateView):
     model = UserProfile
+    form_class = UserProfileForm
     template_name = 'auth_app/register_page.html'
-    fields = ['description', 'avatar', 'age', 'name']  # Specify the fields you want to include in the form
-    success_url = reverse_lazy('profile_details')  # Redirect to the profile details page upon successful creation
+    success_url = reverse_lazy('home_page')
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    def get(self, request, *args, **kwargs):
+        current_user = self.request.user
+        context = {
+            "profile": current_user
+        }
+        return render(request, template_name='auth_app/profile_details.html', context=context)
+
+
+class LogoutPageView(LogoutView):
+    next_page = reverse_lazy("login_page")
+
+    def get(self, request, *args, **kwargs):
+        current_user = self.request.user
+        context = {
+            "profile": current_user
+        }
+        return render(request, template_name='auth_app/profile_details.html', context=context)
