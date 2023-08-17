@@ -6,29 +6,14 @@ from django.core.validators import MinLengthValidator
 User = get_user_model()
 
 
-class CategoryModel(models.Model):
-    name = models.CharField(
-        max_length=20,
-        validators=
-        [
-            validate_starts_with_uppercase,
-            MinLengthValidator(3),
-        ]
-
-    )
-    description = models.TextField(
-        max_length=500,
-        validators=
-        [
-            validate_starts_with_uppercase,
-            MinLengthValidator(10),
-        ]
-    )
-
-
 class ProductModel(models.Model):
+    CATEGORY_CHOICES = [
+        ('shoes', 'Shoes'),
+        ('clothes', 'Clothes'),
+        ('accessories', 'Accessories'),
+    ]
     name = models.CharField(
-        max_length=20,
+        max_length=100,
         validators=
         [
             validate_starts_with_uppercase,
@@ -45,8 +30,8 @@ class ProductModel(models.Model):
         ]
     )
     price = models.IntegerField()
-    image = models.ImageField(upload_to='static/img/')
-    category = models.ForeignKey(to=CategoryModel, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='static/images/')
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     quantity = models.IntegerField(default=0)
 
 

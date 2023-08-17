@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=20, validators=[exam_store.main.validators.validate_starts_with_uppercase, django.core.validators.MinLengthValidator(3)])),
                 ('description', models.TextField(max_length=500, validators=[exam_store.main.validators.validate_starts_with_uppercase, django.core.validators.MinLengthValidator(10)])),
                 ('price', models.IntegerField()),
-                ('image', models.ImageField(upload_to='static/img/')),
+                ('image', models.ImageField(upload_to='static/images/')),
                 ('quantity', models.IntegerField(default=0)),
                 ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.categorymodel')),
             ],

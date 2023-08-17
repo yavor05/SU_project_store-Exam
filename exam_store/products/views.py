@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, UpdateView, \
@@ -41,3 +42,22 @@ class ShoesCatalogue(TemplateView):
 
 class AccessoriesCatalogue(TemplateView):
     template_name = "products/accessories_catalogue.html"
+
+
+class CatalogueView(TemplateView, LoginRequiredMixin):
+    template_name = 'products/catalogue_page.html'
+    model = ProductModel
+    products = ProductModel.objects.all()
+    extra_context = {
+        "products": products,
+    }
+
+    def get(self, request, *args, **kwargs):
+        products = ProductModel.objects.all()
+        current_user = self.request.user
+        context = {
+            "products": products,
+            "profile": current_user,
+            "pk": current_user.id
+        }
+        return render(request, template_name='products/catalogue_page.html', context=context)

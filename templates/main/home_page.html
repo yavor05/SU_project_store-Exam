@@ -1,67 +1,78 @@
-{% extends 'main/base/base.html' %}
+{% include 'main/base/navbar.html' %}
 {% load static %}
-{% block content %}
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>My Online Shop</title>
-    <!-- Add your CSS and other head elements here -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+    <title>Home</title>
     <style>
-        /* Add your custom CSS styles here */
-        .item-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 20px;
+
+        .navbar-spacing {
+            height: 70px; /* Adjust the height as needed */
         }
-        .item {
-            max-width: 300px;
-            text-align: center;
+
+        .footer-spacing {
+            height: 50px; /* Adjust the height as needed */
         }
-        .item img {
-            max-width: 100%;
-        }
-        .item button {
-            margin-top: 10px;
-        }
+        .content-container {
+    margin-bottom: 50px; /* Adjust the margin as needed */
+}
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <h1>Welcome to My Online Shop!</h1>
-
-    <!-- Shoes Section -->
-    <h2>Shoes</h2>
-    <div class="item-container">
-        <div class="item">
-            <img src="{% static 'img/traviss-scott-aj1-high-mocha.jpeg' %}" alt="Nike Air Jordan 1 High Travis Scott">
-            <button>View Details</button>
+        <div class="navbar-spacing"></div>
+        <!-- Page Content-->
+        <div class="container px-4 px-lg-5 ">
+            <!-- Heading Row-->
+            <div class="row gx-4 gx-lg-5 align-items-center my-5">
+                <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{% static 'images/j1.jpeg' %}" style="width: 900px; height: 800px" /></div>
+                <div class="col-lg-5">
+                    <h1 class="font-weight-light">Trendy Threads</h1>
+                    <p>Hello there! We are here to provide you with the newest and trendiest sneakers, clothes, accessories for the lowest price possible! Our products are selected carefully and are made of the highest quality material. Don't believe us? Go and see  for your self!</p>
+                    <a class="btn btn-primary" href="{% url 'catalogue_page' %}">All items</a>
+                </div>
+            </div>
+            <!-- Call to Action-->
+            <div class="card text-white bg-secondary my-5 py-4 text-center">
+                <div class="card-body"><p class="text-white m-0">If you are reading this you have made the right decision opening this website.</p></div>
+            </div>
+            <!-- Content Row-->
+            <div class="row gx-4 gx-lg-5">
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Shoes</h2>
+                            <p class="card-text">Want to check out what new arrivals we have? Click the button and start your shoe shopping now!</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="{% url 'shoes_catalogue' %}">More Info</a></div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Clothes</h2>
+                            <p class="card-text">If you are reading this you probably have seen your friends wearing the newest clothes. This is the right place for you. Click the button below to learn more!</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="{% url 'clothes_catalogue' %}">More Info</a></div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Accessories</h2>
+                            <p class="card-text">Looking for a way to complete your outfits? Look no further! If you want to have the best looking outfit one of the main factors is an accessory. So what are you waiting for click the button below to learn more.</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="{% url 'accessories_catalogue' %}">More Info</a></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="item">
-            <img src="{% static 'img/air-jordan4-military-black.jpeg' %}" alt="Nike Air Jordan 4 Retro GS 'Military Black">
-            <button>View Details</button>
-        </div>
-    </div>
-
-    <!-- Clothes Section -->
-    <h2>Clothes</h2>
-    <div class="item-container">
-        <div class="item">
-            <img src="#" alt="Clothing item 1">
-            <button>View Details</button>
-        </div>
-        <div class="item">
-            <img src="#" alt="Clothing item 2">
-            <button>View Details</button>
-        </div>
-    </div>
-
-    <!-- Add more sections or content as needed -->
-
+        <div class="navbar-spacing"></div>
 </body>
 </html>
-
-{% endblock %}
-
+{% include 'main/base/footer.html' %}

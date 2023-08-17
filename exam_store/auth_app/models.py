@@ -11,14 +11,12 @@ class UserProfile(auth_models.AbstractUser):
         ('F', 'Female'),
         ('O', 'Other'),
     ]
-    first_name = models.CharField(blank=False, null=False, max_length=40, validators=[
+    first_name = models.CharField(blank=True, null=True, default="None", max_length=40, validators=[
         MinLengthValidator(2), validate_starts_with_uppercase, letters_only_validator
     ])
-    last_name = models.CharField(blank=False, null=False, max_length=40, validators=[
+    last_name = models.CharField(blank=True, null=True, default="None", max_length=40, validators=[
         MinLengthValidator(2), validate_starts_with_uppercase, letters_only_validator
     ])
-    description = models.TextField(blank=True, max_length=300)
-    profile_picture = models.ImageField(upload_to='avatars/', blank=True, null=True)
     age = models.IntegerField(null=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=1, null=True)
     email = models.EmailField(unique=True)
