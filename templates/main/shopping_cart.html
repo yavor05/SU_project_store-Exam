@@ -1,0 +1,51 @@
+{% extends 'main/base/base.html' %}
+
+{% block content %}
+    <head>
+        <!-- Add your meta tags, links, and styles here -->
+        <!-- ... -->
+        <link href="/static/styles/styles.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+
+    <header class="bg-dark py-5">
+        <!-- Your header content -->
+        <!-- ... -->
+    </header>
+
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for cart_item in products %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="{{ cart_item.product.image.url }}"
+                                 style="height: 240px; width: 270px"
+                            >
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">{{ cart_item.product.name }}</h5>
+                                    <h5>{{ cart_item.product.price }}$</h5>
+                                </div>
+                            </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <!-- Display cart item details -->
+                                    <p>Quantity: {{ cart_item.quantity }}</p>
+                                    <p>Total: ${{ cart_item.subtotal }}.00</p>
+                                    <!-- Add a link to remove the item from the cart -->
+                                    <a class="btn btn-outline-dark mt-auto"
+                                       href="{% url 'product_detail_page' cart_item.product.pk %}">View options</a>
+
+                                    {#                                        <a class="btn btn-outline-danger" href="{% url 'remove_from_cart' cart_item.pk %}">Remove</a>#}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    </body>
+{% endblock %}

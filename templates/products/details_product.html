@@ -49,10 +49,18 @@
                     <div class="d-flex">
                         <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1"
                                style="max-width: 3rem"/>
-                        <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="button"
+                                onclick="location.href='{% url 'add_to_cart' product.pk %}'">
                             <i class="bi-cart-fill me-1"></i>
                             Add to cart
                         </button>
+                        {% if profile.is_staff or profile.is_admin %}
+                        <a href="{% url 'product_edit_page' product.pk %}" class="btn btn-outline-dark flex-shrink-0">
+                            <i class="bi-pencil-fill me-1" style="font-size: 1.25rem;"></i>
+                            Edit
+                        </a>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>

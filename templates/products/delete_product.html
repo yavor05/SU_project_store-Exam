@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Product</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <style>
+        /* Add your custom styling here */
+        body {
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .delete-card {
+            width: 400px;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .delete-card h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .delete-card p {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: white;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            border: none;
+            background-color: #464646;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-group button {
+            background-color: #ff4646;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #e03030;
+        }
+
+        .cancel-link {
+            color: white;
+            text-decoration: none;
+        }
+
+        .form-group button {
+            background-color: #ff4646;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .form-group button:hover {
+            background-color: #e03030;
+        }
+    </style>
+</head>
+<body>
+<div class="delete-card">
+    <h1>Delete Product</h1>
+    <p>Are you sure you want to delete "{{ product.name }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.product }}
+        </div>
+        <div class="form-group">
+            {{ form.confirm }}
+        </div>
+        <button class="form-group" type="submit">Delete</button>
+    </form>
+    <a class="cancel-link" href="{% url 'home_page' %}">Cancel</a>
+</div>
+</body>
+</html>

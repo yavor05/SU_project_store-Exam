@@ -1,0 +1,20 @@
+.user_card {
+    width: 500px; /* Adjust this width as needed */
+    margin-top: auto;
+    margin-bottom: auto;
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px 0px #000;
+}
+
+.input-group-text {
+    background: #007bff;
+    color: white;
+    border: 0 !important;
+    border-radius: 10px 0px 0px 10px !important;
+}
+
+.input_user, .input_pass {
+    border-radius: 0px 10px 10px 0px !important;
+}

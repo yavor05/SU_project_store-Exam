@@ -11,7 +11,7 @@
           crossorigin="anonymous">
 
     <title>Trendy Threads</title>
-     <style>
+    <style>
         .navbar-container {
             padding-left: 1px;
             padding-right: 1px;
@@ -27,9 +27,11 @@
             margin: 0; /* Remove default margin */
             line-height: 1; /* Set line height to vertically center text */
         }
+
         .navbar-nav .dropdown-toggle::after {
             display: none;
         }
+
         .navbar-nav .nav-link {
             color: white;
         }
@@ -42,6 +44,11 @@
         /* Set color for dropdown menu items */
         .navbar-nav .dropdown-item {
             color: white;
+        }
+
+        .navbar-nav .nav-item img {
+            width: 40px; /* Adjust the width to your preference */
+            height: 40px; /* Adjust the height to your preference */
         }
     </style>
 </head>
@@ -66,18 +73,18 @@
 
                 <li class="nav-item active">
                     <a href="{% url 'home_page' %}" class="nav-link">
-                        <h4>Home</h4>
+                        <img src="/static/images/house.svg" alt="">
                     </a>
                 </li>
                 <li class="nav-item active">
                     <a href="{% url 'about_page' %}" class="nav-link">
-                        <h4>About</h4>
+                        <img src="/static/images/info-square-fill.svg" alt="">
                     </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <h4>Catalogue</h4>
+                        <img src="/static/images/list.svg" alt="">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'shoes_catalogue' %}">Shoes</a>
@@ -88,12 +95,11 @@
                 <li class="nav-item active">
                     {% if profile %}
                         <a href="{% url 'profile_details' profile.pk %}" class="nav-link">
-                            <h4>Profile</h4>
-
+                            <img src="/static/images/person-square.svg" alt="">
                         </a>
                     {% else %}
                         <a href="{% url 'register_page' %}" class="nav-link">
-                            <h4>Register</h4>
+                            <img src="/static/images/box-arrow-in-right.svg" alt="">
                         </a>
                     {% endif %}
                 </li>
@@ -102,17 +108,43 @@
                 <li class="nav-item active">
                     {% if profile %}
                         <a href="{% url 'logout_page' %}" class="nav-link">
-                            <h4>Logout</h4>
+                            <img src="/static/images/box-arrow-right.svg" alt="">
                         </a>
                     {% endif %}
                 </li>
+                {% if profile.is_staff %}
+                <li class="nav-item active">
+                {# ADD product #}
+                        <a href="{% url 'product_add_page' %}" class="nav-link">
+                            <img src="/static/images/plus-square-fill.svg" alt="">
+                        </a>
+                </li>
+                {% endif %}
+                {% if profile.is_admin %}
+                <li class="nav-item active">
+                {# ADD product #}
+                        <a href="{% url 'product_add_page' %}" class="nav-link">
+                            <img src="/static/images/plus-square-fill.svg" alt="">
+                        </a>
+                </li>
+                {% endif %}
 
             </ul>
         </div>
-        <form action="" class="d-flex">
-            <input type="text" class="form-control me-2" placeholder="Search">
-            <button type="submit" class="btn btn-outline-success">Search</button>
+        <form action="{% url 'search_results' %}" method="GET" class="d-flex">
+            <input type="text" name="q" class="form-control me-2" placeholder="Search">
+            <button type="submit" class="btn btn-outline-success">
+                <img src="/static/images/search.svg" alt="">
+            </button>
         </form>
+        <ul class="navbar-nav">
+
+                <li class="nav-item active">
+                    <a href="{% url 'shopping_cart' %}" class="nav-link">
+                        <img src="/static/images/cart4.svg" alt="">
+                    </a>
+                </li>
+        </ul>
     </div>
 </nav>
 

@@ -1,65 +1,85 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, UpdateView, \
     DeleteView, DetailView
 
 from exam_store.auth_app.models import UserProfile
-from exam_store.main.models import ProductModel
+from exam_store.main.models import ProductModel, Cart
+from django.contrib.auth.decorators import user_passes_test
 
-def is_staff(user):
-    return user.role == 'staff'
-
-def is_user(user):
-    return user.role == 'user'
-# Create your views here.
-class AddProductView(FormView):
-    form_class = ProductModel
-    template_name = 'products/add_product.html'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Assuming you want to pass the logged-in user's profile to the context
-        if self.request.user.is_authenticated:
-            profile = UserProfile.objects.get(pk=self.request.user.pk)
-            context['profile'] = profile
-
-        return context
-
-class EditProductView(UpdateView):
-    model = ProductModel
-    template_name = 'products/edit_product.html'
-    fields = '__all__'
-    success_url = reverse_lazy('catalogue_page')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Assuming you want to pass the logged-in user's profile to the context
-        if self.request.user.is_authenticated:
-            profile = UserProfile.objects.get(pk=self.request.user.pk)
-            context['profile'] = profile
-
-        return context
+from exam_store.products.forms import ProductModelForm, DeleteProductForm, ProductEditForm
+from exam_store.main.models import ProductModel, CartItem
 
 
-class DeleteProductView(DeleteView):
-    template_name = 'products/delete_product.html'
-    model = ProductModel
-    success_url = reverse_lazy('catalogue_page')
+def add_to_cart(request, product_id):
+    product = get_object_or_404(ProductModel, pk=product_id)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    # Get or create the user's cart
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    user = request.user  # Assuming you're using the built-in authentication system
+    cart_item, item_created = CartItem.objects.get_or_create(cart=cart, user=user, product=product)
+    # Check if the product is already in the cart
+    cart_item, item_created = CartItem.objects.get_or_create(cart=cart, product=product)
 
-        # Assuming you want to pass the logged-in user's profile to the context
-        if self.request.user.is_authenticated:
-            profile = UserProfile.objects.get(pk=self.request.user.pk)
-            context['profile'] = profile
+    if not item_created:
+        cart_item.quantity += 1
+        cart_item.save()
 
-        return context
+    return redirect('shopping_cart')  # Redirect to the product detail page
 
 
-class DetailProductView(DetailView):
+
+
+
+def add_product_view(request):
+    if request.method == 'POST':
+        form = ProductModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home_page')  # Redirect to home page after adding a product
+    else:
+        form = ProductModelForm()
+
+    context = {}
+    if request.user.is_authenticated:
+        profile = UserProfile.objects.get(pk=request.user.pk)
+        context['profile'] = profile
+
+    context['form'] = form
+    return render(request, 'products/add_product.html', context)
+
+
+def edit_product_view(request, pk):
+    product = get_object_or_404(ProductModel, pk=pk)
+
+    if request.method == 'POST':
+        form = ProductEditForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('home_page')  # Redirect to home page after editing the product
+    else:
+        form = ProductEditForm(instance=product)
+
+    context = {'form': form, 'product': product}
+    return render(request, 'products/edit_product.html', context)
+
+
+def delete_product(request, pk):
+    product = get_object_or_404(ProductModel, pk=pk)
+
+    if request.method == 'POST':
+        form = DeleteProductForm(request.POST, instance=product)
+        if form.is_valid():
+            product.delete()
+            return redirect('home_page')  # Redirect to home page after deletion
+    else:
+        form = DeleteProductForm(instance=product)
+
+    return render(request, 'products/delete_product.html', {'form': form, 'product': product})
+
+
+class DetailProductView(DetailView, LoginRequiredMixin):
     template_name = 'products/details_product.html'
     model = ProductModel
     context_object_name = 'product'
@@ -83,7 +103,7 @@ class DetailProductView(DetailView):
         return context
 
 
-class ClothesCatalogue(TemplateView):
+class ClothesCatalogue(TemplateView, LoginRequiredMixin):
     template_name = "products/clothes_catalogue.html"
     clothes = ProductModel.objects.filter(category="clothes")
     extra_context = {
@@ -101,12 +121,13 @@ class ClothesCatalogue(TemplateView):
         return context
 
 
-class ShoesCatalogue(TemplateView):
+class ShoesCatalogue(TemplateView, LoginRequiredMixin):
     template_name = "products/shoes_catalogue.html"
     shoes = ProductModel.objects.filter(category="shoes")
     extra_context = {
         'products': shoes
     }
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -118,12 +139,13 @@ class ShoesCatalogue(TemplateView):
         return context
 
 
-class AccessoriesCatalogue(TemplateView):
+class AccessoriesCatalogue(TemplateView, LoginRequiredMixin):
     template_name = "products/accessories_catalogue.html"
     accessories = ProductModel.objects.filter(category="accessories")
     extra_context = {
         'products': accessories
     }
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 

@@ -131,4 +131,4 @@ LOGIN_REDIRECT_URL = "home_page"
 
 LOGOUT_REDIRECT_URL = "home_page"
 
-AUTH_USER_MODEL = 'auth_app.UserProfile'
+AUTH_USER_MODEL = "auth_app.UserProfile"
