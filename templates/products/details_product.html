@@ -1,0 +1,94 @@
+{% extends 'main/base/base.html' %}
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        <title>Shop Item - Start Bootstrap Template</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico"/>
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/static/styles/styles.css" rel="stylesheet"/>
+    </head>
+    <style>
+        .navbar-spacing {
+            height: 50px; /* Adjust the height as needed */
+        }
+
+        .custom-text {
+            white-space: pre-line;
+        }
+
+        .resized-image {
+            width: 270px;
+            height: auto;
+            max-height: 240px
+        }
+
+
+    </style>
+    <body>
+    <div class="navbar-spacing"></div>
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0"
+                                           src="{{ product.image.url }}"/></div>
+                <div class="col-md-6">
+                    <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
+                    <div class="fs-5 mb-5">
+                        <span>${{ product.price }}.00</span>
+                    </div>
+                    <p class="lead custom-text">{{ product.description }}</p>
+                    <div class="d-flex">
+                        <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1"
+                               style="max-width: 3rem"/>
+                        <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                            <i class="bi-cart-fill me-1"></i>
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5 bg-light">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Related products</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for shoe in shoes %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top resized-image" src="{{ shoe.image.url }}"/>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{ shoe.name }}</h5>
+                                    <!-- Product price-->
+                                    ${{ shoe.price }}.00
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                                            href="{% url 'product_detail_page' shoe.pk %}">View
+                                    options</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    </body>
+    </html>
+{% endblock %}

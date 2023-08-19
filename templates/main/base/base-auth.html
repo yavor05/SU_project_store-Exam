@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -11,7 +11,7 @@
           crossorigin="anonymous">
 
     <title>Trendy Threads</title>
-     <style>
+    <style>
         .navbar-container {
             padding-left: 1px;
             padding-right: 1px;
@@ -21,22 +21,30 @@
             display: flex;
             align-items: center; /* Vertically center items */
             height: 80px; /* Set a uniform height for navbar items */
+
+
         }
 
         .navbar-nav .nav-item h4 {
             margin: 0; /* Remove default margin */
             line-height: 1; /* Set line height to vertically center text */
+
         }
+
         .navbar-nav .dropdown-toggle::after {
             display: none;
+
         }
+
         .navbar-nav .nav-link {
             color: white;
+
         }
 
         /* Set background color for dropdown menu */
         .navbar-nav .dropdown-menu {
-            background-color: #343a40; /* You can adjust this color as needed */
+            background-color: #000000; /* You can adjust this color as needed */
+
         }
 
         /* Set color for dropdown menu items */
@@ -62,64 +70,21 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-
+            <ul class="navbar-nav mx-auto"> <!-- Center the items -->
                 <li class="nav-item active">
                     <a href="{% url 'home_page' %}" class="nav-link">
-                        <h4>Home</h4>
+                        <h1>Home</h1>
                     </a>
                 </li>
-                <li class="nav-item active">
-                    <a href="{% url 'about_page' %}" class="nav-link">
-                        <h4>About</h4>
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <h4>Catalogue</h4>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'shoes_catalogue' %}">Shoes</a>
-                        <a class="dropdown-item" href="{% url 'clothes_catalogue' %}">Clothes</a>
-                        <a class="dropdown-item" href="{% url 'accessories_catalogue' %}">Accessories</a>
-                    </div>
-                </li>
-                <li class="nav-item active">
-                    {% if profile %}
-                        <a href="{% url 'profile_details' profile.pk %}" class="nav-link">
-                            <h4>Profile</h4>
-
-                        </a>
-                    {% else %}
-                        <a href="{% url 'register_page' %}" class="nav-link">
-                            <h4>Register</h4>
-                        </a>
-                    {% endif %}
-                </li>
-
-                </li>
-                <li class="nav-item active">
-                    {% if profile %}
-                        <a href="{% url 'logout_page' %}" class="nav-link">
-                            <h4>Logout</h4>
-                        </a>
-                    {% endif %}
-                </li>
-
             </ul>
         </div>
-        <form action="" class="d-flex">
-            <input type="text" class="form-control me-2" placeholder="Search">
-            <button type="submit" class="btn btn-outline-success">Search</button>
-        </form>
     </div>
 </nav>
+
+{% block content %}{% endblock %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-
-
 </body>
 </html>

@@ -3,14 +3,14 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            background: #000000 !important;
+            background: #ffffff !important;
         }
 
         .user_card {
             width: 350px;
             margin-top: auto;
             margin-bottom: auto;
-            background: #035e26;
+            background: #101010;
             position: relative;
             display: flex;
             justify-content: center;
@@ -33,8 +33,8 @@
 
         .login_btn {
             width: 100%;
-            background: #101010 !important;
-            color: white !important;
+            background: #ffffff !important;
+            color: #000000 !important;
         }
 
         .login_btn:focus {
@@ -47,8 +47,8 @@
         }
 
         .input-group-text {
-            background: #f7ba5b !important;
-            color: white !important;
+            background: #ffffff !important;
+            color: #000000 !important;
             border: 0 !important;
             border-radius: 0.25rem 0 0 0.25rem !important;
         }

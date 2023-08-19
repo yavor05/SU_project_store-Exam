@@ -13,3 +13,7 @@
     for (var field in form_fields) {
         form_fields[field].className += ' form-control'
     }
+    function returnToHome() {
+        // Redirect to the home page URL
+        window.location.href = "{% url 'home_page' %}";
+    }

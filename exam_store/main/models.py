@@ -1,7 +1,13 @@
+import sys
+
 from django.db import models
 from django.contrib.auth import get_user_model
 from exam_store.main.validators import validate_starts_with_uppercase
 from django.core.validators import MinLengthValidator
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 
 User = get_user_model()
 
@@ -33,6 +39,9 @@ class ProductModel(models.Model):
     image = models.ImageField(upload_to='static/images/')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     quantity = models.IntegerField(default=0)
+
+    def __repr__(self):
+        return self.name
 
 
 class Cart(models.Model):

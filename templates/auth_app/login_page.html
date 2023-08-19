@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+{% extends 'main/base/base-auth.html' %}
 {% load static %}
+{% block content %}
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -45,13 +47,14 @@
 
             </div>
             {% for message in messages %}
-                <p id="messages">{{ message }}</p>
+                <p id="messages" style="color: black;">{{ message }}</p>
             {% endfor %}
 
 
             <div class="mt-4">
-                <div class="d-flex justify-content-center links">
-                    Don't have an account? <a href="{% url 'register_page' %}" class="ml-2">Sign Up</a>
+                <div class="d-flex justify-content-center links" style="color: white">
+                    Don't have an account?
+                    <a href="{% url 'register_page' %}" class="ml-2">Sign Up</a>
                 </div>
 
             </div>
@@ -61,3 +64,4 @@
 </body>
 
 </html>
+{% endblock %}

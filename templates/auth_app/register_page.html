@@ -1,6 +1,8 @@
-
 <!DOCTYPE html>
 <html>
+{% extends 'main/base/base-auth.html' %}
+{% block content %}
+
 {% load static %}
 <head>
     <title>Register</title>
@@ -57,13 +59,18 @@
             </div>
 
             <div class="mt-4">
-                <div class="d-flex justify-content-center links">
+                <div class="d-flex justify-content-center links" style="color: white">
                     Already have an account? <a href="{% url 'login_page' %}" class="ml-2">Login</a>
                 </div>
             </div>
+
+
         </div>
     </div>
 </div>
-<script src="{% static 'js/script-register-page.js' %}"></script>
+<script src="{% static 'js/script-register-page.js' %}">
+
+</script>
 </body>
 </html>
+{% endblock %}

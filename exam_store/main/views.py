@@ -11,18 +11,18 @@ from exam_store.main.models import ProductModel
 # Create your views here.
 
 
-
 class AboutPageView(TemplateView):
     template_name = "main/about_page.html"
 
-    def get(self, request, *args, **kwargs):
-        current_user = self.request.user
-        context = {
-            "profile": current_user,
-            "pk": current_user.id
-        }
-        return render(request, template_name="main/about_page.html", context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
+        # Assuming you want to pass the logged-in user's profile to the context
+        if self.request.user.is_authenticated:
+            profile = UserProfile.objects.get(pk=self.request.user.pk)
+            context['profile'] = profile
+
+        return context
 
 class HomePageView(TemplateView):
     template_name = 'main/home_page.html'

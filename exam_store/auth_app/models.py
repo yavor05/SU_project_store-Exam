@@ -11,15 +11,21 @@ class UserProfile(auth_models.AbstractUser):
         ('F', 'Female'),
         ('O', 'Other'),
     ]
-    first_name = models.CharField(blank=True, null=True, default="None", max_length=40, validators=[
+    ROLE_CHOICES = (
+        ('staff', 'Staff'),
+        ('user', 'User'),
+        ('admin', 'Admin'),
+    )
+    first_name = models.CharField(blank=True, null=True, max_length=40, validators=[
         MinLengthValidator(2), validate_starts_with_uppercase, letters_only_validator
     ])
-    last_name = models.CharField(blank=True, null=True, default="None", max_length=40, validators=[
+    last_name = models.CharField(blank=True, null=True, max_length=40, validators=[
         MinLengthValidator(2), validate_starts_with_uppercase, letters_only_validator
     ])
     age = models.IntegerField(null=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=1, null=True)
     email = models.EmailField(unique=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
 
     def __str__(self):
         return self.username

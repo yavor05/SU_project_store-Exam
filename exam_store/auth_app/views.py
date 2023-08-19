@@ -1,11 +1,9 @@
-from django.contrib.auth.models import User
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, DetailView, UpdateView
-from django.contrib.auth.views import LoginView, LogoutView
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, UpdateView
 from django.contrib.auth import authenticate, login, logout
-from exam_store.auth_app.forms import UserProfileForm, LoginForm, UserProfileEditForm
+from exam_store.auth_app.forms import UserProfileForm, UserProfileEditForm
 from exam_store.auth_app.models import UserProfile
 from django.contrib import messages
 
@@ -62,8 +60,20 @@ def logout_user(request):
 
 class UserEditView(UpdateView):
     model = UserProfile
+    template_name = 'auth_app/edit_profile.html'
     form_class = UserProfileEditForm
-    template_name = "auth_app/edit_profile.html"
+    success_url = reverse_lazy('profile_details')
 
-    def get_success_url(self):
-        return reverse_lazy('profile_details', kwargs={'pk': self.object.pk})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Assuming you want to pass the logged-in user's profile to the context
+        if self.request.user.is_authenticated:
+            profile = UserProfile.objects.get(pk=self.request.user.pk)
+            context['profile'] = profile
+
+        return context
+
+    def form_valid(self, form):
+        form.save()  # Save the form data
+        return HttpResponseRedirect(reverse_lazy('profile_details', args=[self.request.user.pk]))

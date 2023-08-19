@@ -1,6 +1,8 @@
+{% extends 'main/base/base-auth.html' %}
 <!DOCTYPE html>
 <html>
 {% load static %}
+{% block content %}
 <head>
     <title>Profile Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -22,6 +24,37 @@
         .edit-input-group {
             display: none;
         }
+        .navbar-container {
+            padding-left: 1px;
+            padding-right: 1px;
+        }
+
+        .navbar-nav .nav-item {
+            display: flex;
+            align-items: center; /* Vertically center items */
+            height: 80px; /* Set a uniform height for navbar items */
+        }
+
+        .navbar-nav .nav-item h4 {
+            margin: 0; /* Remove default margin */
+            line-height: 1; /* Set line height to vertically center text */
+        }
+        .navbar-nav .dropdown-toggle::after {
+            display: none;
+        }
+        .navbar-nav .nav-link {
+            color: white;
+        }
+
+        /* Set background color for dropdown menu */
+        .navbar-nav .dropdown-menu {
+            background-color: #343a40; /* You can adjust this color as needed */
+        }
+
+        /* Set color for dropdown menu items */
+        .navbar-nav .dropdown-item {
+            color: white;
+        }
     </style>
 </head>
 
@@ -39,7 +72,7 @@
                     <div class="input-group mb-3">
                         <label class="input-group-text">First Name</label>
                         <input type="text" class="form-control" name="first_name" value="{{ profile.first_name }}"
-                               placeholder="{{ profile.age }}" >
+                               placeholder="{{ profile.first_name }}" >
                         <div class="input-group-append edit-input-group">
                             <button class="btn btn-secondary edit-btn" type="button" onclick="toggleEdit(this)">Edit</button>
                         </div>
@@ -93,7 +126,9 @@
                     <!-- Similar sections for other fields (last name, email, etc.) -->
 
                     <div class="d-flex justify-content-center mt-3 login_container">
-                        <input class="btn login_btn" type="submit" value="Save Changes">
+                        <button class="btn login_btn" type="button"
+                                onclick="window.location.href='{% url 'user_edit_page' profile.pk %}'">Edit Profile
+                        </button>
                     </div>
                 </form>
             </div>
@@ -121,3 +156,4 @@
 </script>
 </body>
 </html>
+{% endblock %}

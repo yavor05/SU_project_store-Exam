@@ -1,47 +1,161 @@
-{% extends 'main/base/base.html' %}
+<!DOCTYPE html>
+<html>
+{% extends 'main/base/base-auth.html' %}
+{% load static %}
 {% block content %}
-    <!-- Start Edit Profile Section -->
-    <div class="edit-delete">
-        <h2>Edit Profile</h2>
-        <!-- Start Edit Profile From -->
-        <form method="post">
-            {% csrf_token %}
 
-            {% for field in form %}
-                <p class="error"> {{ field.errors }} </p>
-                <div class="label-input">
-                    <label>{{ field.label }}</label>
+<head>
+    <title>Profile Edit</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+          integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/style-register-page.css' %}">
 
-                    {% if not field.label == "Gender:" %}
-                        {{ field }}
-                    {% else %}
-                        <div class="list-choice">
-                            <div class="list-choice-title">Gender</div>
-                            <div class="list-choice-objects">
+    <style>
+        .edit-btn {
+            margin-top: 10px;
+        }
 
-                                {% for type, value in form.fields.gender.choices %}
-                                    <label>
-                                        <input type="radio" value="{{ value }}"
-                                               name="gender"
-                                                {% if form.gender.value == value %}
-                                               checked
-                                                {% endif %}/>
-                                        <span>{{ value }}</span>
-                                    </label>
+        .edit-input-group {
+            display: none;
+        }
+        .navbar-container {
+            padding-left: 1px;
+            padding-right: 1px;
+        }
+
+        .navbar-nav .nav-item {
+            display: flex;
+            align-items: center; /* Vertically center items */
+            height: 80px; /* Set a uniform height for navbar items */
+        }
+
+        .navbar-nav .nav-item h4 {
+            margin: 0; /* Remove default margin */
+            line-height: 1; /* Set line height to vertically center text */
+        }
+        .navbar-nav .dropdown-toggle::after {
+            display: none;
+        }
+        .navbar-nav .nav-link {
+            color: white;
+        }
+
+        /* Set background color for dropdown menu */
+        .navbar-nav .dropdown-menu {
+            background-color: #343a40; /* You can adjust this color as needed */
+        }
+
+        /* Set color for dropdown menu items */
+        .navbar-nav .dropdown-item {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container h-100">
+    <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+            <div class="d-flex justify-content-center">
+                <h3 id="form-title">PROFILE EDIT</h3>
+            </div>
+            <div class="d-flex justify-content-center form_container">
+                <form method="POST" action="{% url 'user_edit_page' user.id %}">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <ul>
+                                {% for field in form %}
+                                    {% if field.errors %}
+                                        <li>{{ field.label }}:
+                                            {% for error in field.errors %}
+                                                {{ error|escape }}
+                                            {% endfor %}
+                                        </li>
+                                    {% endif %}
                                 {% endfor %}
-
-                            </div>
+                            </ul>
                         </div>
                     {% endif %}
+                    {# First name #}
+                    <div class="input-group mb-3">
+                        <label class="input-group-text">First Name</label>
+                        <input type="text" class="form-control" name="first_name" value="{{ profile.first_name }}"
+                               placeholder="{{ profile.first_name }}">
+                        <div class="input-group-append edit-input-group">
+                            <button class="btn btn-secondary edit-btn" type="button" onclick="toggleEdit(this)">Edit
+                            </button>
+                        </div>
+                    </div>
+                    {# Last name #}
+                    <div class="input-group mb-3">
+                        <label class="input-group-text">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" value="{{ profile.last_name }}"
+                               placeholder="{{ profile.last_name }}">
+                        <div class="input-group-append edit-input-group">
+                            <button class="btn btn-secondary edit-btn" type="button" onclick="toggleEdit(this)">Edit
+                            </button>
+                        </div>
+                    </div>
+                    {# Username #}
+                    <div class="input-group mb-3">
+                        <label class="input-group-text">Username</label>
+                        <input type="text" class="form-control" name="username" value="{{ profile.username }}"
+                               placeholder="{{ profile.username }}">
+                        <div class="input-group-append edit-input-group">
+                            <button class="btn btn-secondary edit-btn" type="button" onclick="toggleEdit(this)">Edit
+                            </button>
+                        </div>
+                    </div>
+                    {# Email #}
+                    <div class="input-group mb-3">
+                        <label class="input-group-text">Email</label>
+                        <input type="text" class="form-control" name="email" value="{{ profile.email }}"
+                               placeholder="{{ profile.email }}">
+                        <div class="input-group-append edit-input-group">
+                            <button class="btn btn-secondary edit-btn" type="button" onclick="toggleEdit(this)">Edit
+                            </button>
+                        </div>
+                    </div>
+                    {# Gender #}
+                    <div class="input-group mb-3">
+                        <label class="input-group-text">Gender</label>
+                        <select class="form-control" name="gender">
+                            {% for choice in form.gender.field.choices %}
+                                <option value="{{ choice.0 }}"
+                                        {% if choice.0 == profile.gender %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="input-group-append edit-input-group">
+                            <button class="btn btn-secondary edit-btn" type="button" onclick="toggleEdit(this)">Edit
+                            </button>
+                        </div>
+                    </div>
+                    {# Age #}
+                    <div class="input-group mb-3">
+                        <label class="input-group-text">Age</label>
+                        <input type="text" class="form-control" name="age" value="{{ profile.age }}"
+                               placeholder="{{ profile.age }}">
+                        <div class="input-group-append edit-input-group">
+                            <button class="btn btn-secondary edit-btn" type="button" onclick="toggleEdit(this)">Edit
+                            </button>
+                        </div>
+                    </div>
+                    {#  #}
+                    <!-- Similar sections for other fields (last name, email, etc.) -->
 
-                </div>
-                <br>
-            {% endfor %}
-
-            <!-- Edit Profile Button -->
-            <button class="edit-btn" type="submit">Edit</button>
-        </form>
-        <!-- End Edit Profile Form -->
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <button class="btn login_btn" type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <!-- End Edit Profile Section -->
+</div>
+</body>
+</html>
 {% endblock %}
