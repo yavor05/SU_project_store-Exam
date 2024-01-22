@@ -29,9 +29,6 @@ def add_to_cart(request, product_id):
     return redirect('shopping_cart')  # Redirect to the product detail page
 
 
-
-
-
 def add_product_view(request):
     if request.method == 'POST':
         form = ProductModelForm(request.POST, request.FILES)
@@ -174,3 +171,9 @@ class CatalogueView(TemplateView, LoginRequiredMixin):
             "pk": current_user.id
         }
         return render(request, template_name='products/catalogue_page.html', context=context)
+
+
+def checkout(request):
+    user = request.user
+    template_name = 'checkout_page.html'
+    return render(request, template_name)

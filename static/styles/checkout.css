@@ -1,0 +1,10 @@
+#checkout{
+    text-align: center;
+    margin-top: 20px;
+}
+#checkout button{
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    border: black;
+}
