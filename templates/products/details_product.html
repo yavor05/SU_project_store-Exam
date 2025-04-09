@@ -55,7 +55,7 @@
                             Add to cart
                         </button>
                         {% if profile.is_staff or profile.is_admin %}
-                        <a href="{% url 'product_edit_page' product.pk %}" class="btn btn-outline-dark flex-shrink-0">
+                        <a href="{% url 'product_edit_page' product.id %}" class="btn btn-outline-dark flex-shrink-0">
                             <i class="bi-pencil-fill me-1" style="font-size: 1.25rem;"></i>
                             Edit
                         </a>

@@ -27,7 +27,7 @@ class AboutPageView(TemplateView):
 
 
 class HomePageView(TemplateView):
-    template_name = 'main/home_page.html'
+    template_name = 'main/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

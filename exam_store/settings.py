@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import ssl
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,3 +133,19 @@ LOGIN_REDIRECT_URL = "home_page"
 LOGOUT_REDIRECT_URL = "home_page"
 
 AUTH_USER_MODEL = "auth_app.UserProfile"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'bratanov2005@gmail.com'
+EMAIL_HOST_PASSWORD = '46281970YAVOR'
+EMAIL_USE_SSL = False
+
+context = ssl.create_default_context()
+context.check_hostname = True
+context.verify_mode = ssl.CERT_REQUIRED
+context.load_default_certs()
+
+# Set the SSL context for the SMTP connection
+EMAIL_SSL_CONTEXT = context

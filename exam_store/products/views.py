@@ -1,16 +1,19 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, UpdateView, \
     DeleteView, DetailView
+from django.conf import settings
+
 
 from exam_store.auth_app.models import UserProfile
 from exam_store.main.models import ProductModel, Cart
 from django.contrib.auth.decorators import user_passes_test
 
-from exam_store.products.forms import ProductModelForm, DeleteProductForm, ProductEditForm
+from exam_store.products.forms import ProductModelForm, DeleteProductForm, ProductEditForm, CheckoutForm
 from exam_store.main.models import ProductModel, CartItem
-
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(ProductModel, pk=product_id)
@@ -173,7 +176,43 @@ class CatalogueView(TemplateView, LoginRequiredMixin):
         return render(request, template_name='products/catalogue_page.html', context=context)
 
 
-def checkout(request):
-    user = request.user
-    template_name = 'checkout_page.html'
-    return render(request, template_name)
+class CheckoutView(FormView):
+    template_name = 'products/checkout_page.html'
+    form_class = CheckoutForm
+    success_url = reverse_lazy('order_thank_you')
+
+    def form_valid(self, form):
+        full_name = form.cleaned_data['full_name']
+        email = form.cleaned_data['email']
+        city = form.cleaned_data['city']
+        address = form.cleaned_data['address']
+        payment_method = form.cleaned_data['payment_method']
+
+        message = render_to_string('email/order_confirmation_email.txt',
+                                   {'full_name': full_name, 'email': email, 'city': city, 'address': address,
+                                    'payment_method': payment_method})
+
+        # Send email
+        send_mail(
+            'Order Confirmation',  # Subject
+            message,  # Message
+            settings.EMAIL_HOST_USER,  # From email
+            [email],  # To email
+            fail_silently=False,
+        )
+
+        # Further processing or redirecting logic
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.success_url
+
+
+def remove_from_cart(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id)
+    cart_item.delete()
+    return redirect('shopping_cart')
+
+
+def order_thank_you(request):
+    return render(template_name='products/order_thank_you.html')

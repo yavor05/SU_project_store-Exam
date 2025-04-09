@@ -2,10 +2,20 @@
 
 {% block content %}
     <head>
-        <!-- Add your meta tags, links, and styles here -->
-        <!-- ... -->
+        <title>Cart</title>
         <link href="/static/styles/styles.css" rel="stylesheet"/>
-        <link href="/static/styles/checkout.css" rel="stylesheet"/>
+        <style>
+            #checkout{
+                text-align: center;
+                margin-top: 20px;
+            }
+            #checkout button{
+                width: 200px;
+                height: 50px;
+                border-radius: 10px;
+                border: black;
+            }
+        </style>
     </head>
 
     <body>
@@ -22,7 +32,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <img class="card-img-top" src="{{ cart_item.product.image.url }}"
-                                 style="height: 240px; width: 270px"
+                                 style="height: 270px; width: 264.5px"
                             >
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -35,11 +45,14 @@
                                     <!-- Display cart item details -->
                                     <p>Quantity: {{ cart_item.quantity }}</p>
                                     <p>Total: ${{ cart_item.subtotal }}.00</p>
-                                    <!-- Add a link to remove the item from the cart -->
+                                    <!-- Add a form to remove the item from the cart -->
+                                    <form method="post" action="{% url 'remove_from_cart' cart_item.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger">Remove</button>
+                                    </form>
+                                    <hr>
                                     <a class="btn btn-outline-dark mt-auto"
                                        href="{% url 'product_detail_page' cart_item.product.pk %}">View options</a>
-
-                                    {#                                        <a class="btn btn-outline-danger" href="{% url 'remove_from_cart' cart_item.pk %}">Remove</a>#}
                                 </div>
                             </div>
                         </div>
@@ -56,7 +69,7 @@
     <script>
         function redirectToAnotherPage() {
             // Change the URL to the desired page
-            window.location.href = "{% url 'checkout_page' %}";
+            window.location.href = "{% url 'checkout' %}";
         }
     </script>
     </body>

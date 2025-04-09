@@ -1,0 +1,7 @@
+Thank you for your order!
+
+Full Name: {{ data.full_name }}
+Email: {{ data.email }}
+City: {{ data.city }}
+Address: {{ data.address }}
+Payment Method: {{ data.payment_method }}
