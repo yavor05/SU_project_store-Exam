@@ -33,11 +33,4 @@ class UserProfile(auth_models.AbstractUser):
     def __repr__(self):
         return f"I am {self.first_name} {self.last_name}"
 
-    def is_staff(self):
-        return self.role == 'staff'
 
-    def is_admin(self):
-        return self.role == 'admin'
-
-    def is_user(self):
-        return self.role == 'user'

@@ -7,7 +7,6 @@ from django.views.generic import TemplateView, FormView, UpdateView, \
     DeleteView, DetailView
 from django.conf import settings
 
-
 from exam_store.auth_app.models import UserProfile
 from exam_store.main.models import ProductModel, Cart
 from django.contrib.auth.decorators import user_passes_test
@@ -15,18 +14,16 @@ from django.contrib.auth.decorators import user_passes_test
 from exam_store.products.forms import ProductModelForm, DeleteProductForm, ProductEditForm, CheckoutForm
 from exam_store.main.models import ProductModel, CartItem
 
+
 def add_to_cart(request, product_id):
     product = get_object_or_404(ProductModel, pk=product_id)
 
-    # Get or create the user's cart
     cart, created = Cart.objects.get_or_create(user=request.user)
-    user = request.user  # Assuming you're using the built-in authentication system
-    cart_item, item_created = CartItem.objects.get_or_create(cart=cart, user=user, product=product)
-    # Check if the product is already in the cart
+    user = request.user
     cart_item, item_created = CartItem.objects.get_or_create(cart=cart, product=product)
 
     if not item_created:
-        cart_item.quantity += 1
+        cart_item.quantity += 1  # !!!!
         cart_item.save()
 
     return redirect('shopping_cart')  # Redirect to the product detail page
@@ -43,7 +40,7 @@ def add_product_view(request):
 
     context = {}
     if request.user.is_authenticated:
-        profile = UserProfile.objects.get(pk=request.user.pk)
+        profile = UserProfile.objects.filter(pk=request.user.pk).first()
         context['profile'] = profile
 
     context['form'] = form
@@ -97,7 +94,7 @@ class DetailProductView(DetailView, LoginRequiredMixin):
 
         # Assuming you want to pass the logged-in user's profile to the context
         if self.request.user.is_authenticated:
-            profile = UserProfile.objects.get(pk=self.request.user.pk)
+            profile = UserProfile.objects.filter(pk=self.request.user.pk).first()
             context['profile'] = profile
 
         return context
@@ -115,7 +112,7 @@ class ClothesCatalogue(TemplateView, LoginRequiredMixin):
 
         # Assuming you want to pass the logged-in user's profile to the context
         if self.request.user.is_authenticated:
-            profile = UserProfile.objects.get(pk=self.request.user.pk)
+            profile = UserProfile.objects.filter(pk=self.request.user.pk).first()
             context['profile'] = profile
 
         return context
@@ -133,7 +130,7 @@ class ShoesCatalogue(TemplateView, LoginRequiredMixin):
 
         # Assuming you want to pass the logged-in user's profile to the context
         if self.request.user.is_authenticated:
-            profile = UserProfile.objects.get(pk=self.request.user.pk)
+            profile = UserProfile.objects.filter(pk=self.request.user.pk).first()
             context['profile'] = profile
 
         return context
@@ -151,7 +148,7 @@ class AccessoriesCatalogue(TemplateView, LoginRequiredMixin):
 
         # Assuming you want to pass the logged-in user's profile to the context
         if self.request.user.is_authenticated:
-            profile = UserProfile.objects.get(pk=self.request.user.pk)
+            profile = UserProfile.objects.filter(pk=self.request.user.pk).first()
             context['profile'] = profile
 
         return context
@@ -215,4 +212,5 @@ def remove_from_cart(request, cart_item_id):
 
 
 def order_thank_you(request):
-    return render(template_name='products/order_thank_you.html')
+    return render(request=request, template_name='products/order_thank_you.html')
+

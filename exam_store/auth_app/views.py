@@ -31,7 +31,7 @@ class ProfileDetailsView(DetailView):
     def get(self, request, *args, **kwargs):
         current_user = self.request.user
         context = {
-            "profile": current_user
+            "profile": current_user if current_user.is_authenticated else None,
         }
         return render(request, template_name='auth_app/profile_details.html', context=context)
 

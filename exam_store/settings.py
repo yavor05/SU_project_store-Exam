@@ -132,15 +132,15 @@ LOGIN_REDIRECT_URL = "home_page"
 
 LOGOUT_REDIRECT_URL = "home_page"
 
-AUTH_USER_MODEL = "auth_app.UserProfile"
+AUTH_USER_MODEL = 'auth_app.UserProfile'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'bratanov2005@gmail.com'
-EMAIL_HOST_PASSWORD = '46281970YAVOR'
 EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'treandythreads.shop@gmail.com'
+EMAIL_HOST_PASSWORD = 'szom qvdt movo nzzc'
 
 context = ssl.create_default_context()
 context.check_hostname = True
